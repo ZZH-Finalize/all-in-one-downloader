@@ -3,5 +3,13 @@
         {
             "path": ".",
         }
-    ]
+    ],
+    "settings": {
+        "replacerules.rules": {
+            "remove header number": {
+                "find": "^(#+) [0-9\\.]+",
+                "replace": "$1"
+            }
+        }
+    }
 }
