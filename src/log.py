@@ -126,3 +126,6 @@ class LoggerBase(logging.Logger):
         """移除指定的输出源。"""
         self.removeHandler(handler)
         handler.close()
+
+
+plugin_logger = LoggerBase(category="framework", ident="plugin-loader")
