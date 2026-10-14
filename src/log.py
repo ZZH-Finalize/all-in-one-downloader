@@ -127,5 +127,10 @@ class LoggerBase(logging.Logger):
         self.removeHandler(handler)
         handler.close()
 
+class PluginLogger(LoggerBase):
+    def __init__(self, plugin_id: str) -> None:
+        super().__init__(category="plugin", ident=plugin_id)
+
+
 
 plugin_logger = LoggerBase(category="framework", ident="plugin-loader")

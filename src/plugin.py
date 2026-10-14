@@ -59,31 +59,14 @@ class PluginBase(BaseModel):
     author: str = ""
 
     # ---- 框架注入的运行时成员 ----
-    _context: Any = PrivateAttr(default=None)
-    _logger: Optional[log.LoggerBase] = PrivateAttr(default=None)
-    _loaded: bool = PrivateAttr(default=False)
+    logger: Optional[log.PluginLogger] = PrivateAttr(default=None)
 
     def model_post_init(self, context: Any, /) -> None:
         """pydantic 校验完成后的初始化钩子，由框架实例化流程触发。"""
         if type(self) is PluginBase:
             raise TypeError("PluginBase 为抽象基类，不得直接实例化")
-        self._logger = log.LoggerBase(category="plugin", ident=self.plugin_id)
+        self.logger = log.PluginLogger(self.plugin_id)
 
-    @property
-    def context(self) -> Any:
-        """框架注入的插件上下文。"""
-        return self._context
-
-    @property
-    def logger(self) -> log.LoggerBase:
-        """框架提供的日志接口（设计文档第 30 节）。"""
-        assert self._logger is not None
-        return self._logger
-
-    @property
-    def loaded(self) -> bool:
-        """插件是否已完成载入。"""
-        return self._loaded
 
     def on_load(self) -> None:
         """载入阶段生命周期函数，由框架调用。
